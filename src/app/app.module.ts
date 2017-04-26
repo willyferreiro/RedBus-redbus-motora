@@ -1,25 +1,23 @@
+import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { StatusBar } from '@ionic-native/status-bar';
-
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
-import { ViagemPage } from '../pages/viagem/viagem'
-import { PassageirosPage } from '../pages/passageiros/passageiros'
-import { MensagensPage } from '../pages/mensagens/mensagens'
 
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toPromise';
+import { PassageiroPage } from '../pages/passageiro/passageiro';
+import { ViagemPage } from '../pages/viagem/viagem';
+import { MensagensPage } from '../pages/mensagens/mensagens';
+import { TabsPage } from '../pages/tabs/tabs';
+
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
+    PassageiroPage,
     ViagemPage,
-    PassageirosPage,
-    MensagensPage
+    MensagensPage,
+    TabsPage
   ],
   imports: [
     BrowserModule,
@@ -28,10 +26,10 @@ import 'rxjs/add/operator/toPromise';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
+    PassageiroPage,
     ViagemPage,
-    PassageirosPage,
-    MensagensPage
+    MensagensPage,
+    TabsPage
   ],
   providers: [
     StatusBar,
