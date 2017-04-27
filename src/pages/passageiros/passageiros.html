@@ -1,0 +1,24 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            Passageiros
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+    <ion-searchbar ></ion-searchbar>
+    <ion-item-group>
+        <ion-list>
+            <ion-item *ngFor="let passageiro of passageiros">
+                <ion-avatar item-left>
+                    <img src="{{passageiro.foto}}">
+                </ion-avatar>
+                <ion-label>{{passageiro.nome}}</ion-label>
+                <ion-toggle #toggle color="secondary"></ion-toggle>
+            </ion-item>
+        </ion-list>
+    </ion-item-group>
+    <button ion-button block (click)="iniciaViagem()">Iniciar Viagem</button>
+</ion-content>

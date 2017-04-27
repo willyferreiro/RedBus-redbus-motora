@@ -1,19 +1,39 @@
 <ion-header>
     <ion-navbar>
         <ion-title>
-            Viagem
+            Em Viagem
         </ion-title>
     </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-    <ion-list>
-        <ion-item>
-            <ion-avatar item-left>
-                <img src="img/avatar-cher.png">
-            </ion-avatar>
-            <h2>Cher</h2>
-            <p>Ugh. As if.</p>
-        </ion-item>
-    </ion-list>
+    <ion-item-group>
+        <ion-list>
+            <ion-list-header>
+                Passageiros Embarcados
+            </ion-list-header>
+            <ion-item>
+                <ion-avatar item-left>
+                    <img src="assets/img/mario.png">
+                </ion-avatar>
+                <ion-label>Mario Bross</ion-label>
+                <button ion-button item-right color="danger">Desembarcar</button>
+            </ion-item>
+        </ion-list>
+    </ion-item-group>
+    <ion-item-group>
+        <ion-list>
+            <ion-list-header>
+                Passageiros Desembarcados
+            </ion-list-header>
+            <ion-item>
+                <ion-avatar item-left>
+                    <img src="assets/img/luigi.png">
+                </ion-avatar>
+                <ion-label>Luigi Bross</ion-label>
+                <button ion-button item-right color="secondary">Embarcar</button>
+            </ion-item>
+        </ion-list>
+    </ion-item-group>
+    <button ion-button block>Finalizar Viagem</button>
 </ion-content>
