@@ -12,12 +12,13 @@
             <ion-list-header>
                 Passageiros Embarcados
             </ion-list-header>
-            <ion-item>
+            <ion-item *ngFor="let passageiro of passageirosEmbarcados">
                 <ion-avatar item-left>
-                    <img src="assets/img/mario.png">
+                    <img src="{{passageiro.foto}}">
                 </ion-avatar>
-                <ion-label>Mario Bross</ion-label>
-                <button ion-button item-right color="danger">Desembarcar</button>
+                <ion-label>{{passageiro.nome}}</ion-label>
+                <button ion-button item-right color="danger"
+                    (click)="desembarca(passageiro)">Desembarcar</button>
             </ion-item>
         </ion-list>
     </ion-item-group>
@@ -26,14 +27,15 @@
             <ion-list-header>
                 Passageiros Desembarcados
             </ion-list-header>
-            <ion-item>
+            <ion-item *ngFor="let passageiro of passageirosDesembarcados">
                 <ion-avatar item-left>
-                    <img src="assets/img/luigi.png">
+                    <img src="{{passageiro.foto}}">
                 </ion-avatar>
-                <ion-label>Luigi Bross</ion-label>
-                <button ion-button item-right color="secondary">Embarcar</button>
+                <ion-label>{{passageiro.nome}}</ion-label>
+                <button ion-button item-right color="secondary"
+                    (click)="embarca(passageiro)">Embarcar</button>
             </ion-item>
         </ion-list>
     </ion-item-group>
-    <button ion-button block>Finalizar Viagem</button>
+    <button ion-button block (click)="finaliza()">Finalizar Viagem</button>
 </ion-content>

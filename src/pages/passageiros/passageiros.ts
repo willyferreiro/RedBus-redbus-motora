@@ -3,7 +3,7 @@ import { NavController } from 'ionic-angular';
 
 import { ViagemPage } from '../viagem/viagem';
 
-import { Passageiro  } from "../../domain/Passageiro/Passageiro";
+import { Passageiro } from "../../domain/Passageiro/Passageiro";
 
 @Component({
     selector: 'page-passageiros',
@@ -12,26 +12,44 @@ import { Passageiro  } from "../../domain/Passageiro/Passageiro";
 export class PassageirosPage implements OnInit {
 
     private _passageiros: Passageiro[] = [];
+    private _passageirosSelecionados: Passageiro[] = [];
 
     constructor(
-        public navCtrl: NavController) 
-    {}
+        public navCtrl: NavController)
+    { }
 
     ngOnInit() {
 
-        let passageiro1 = new Passageiro('Mario Bross', 'assets/img/mario.png');
-        let passageiro2 = new Passageiro('Luigi Silva', 'assets/img/luigi.png');
-        let passageiro3 = new Passageiro('Yoshi Dino', 'assets/img/Yoshi.png');
-        
-        this._passageiros.push(passageiro1, passageiro2, passageiro3);
+        this._passageiros.push(new Passageiro('Mario Bross', 'assets/img/mario.png'));
+        this._passageiros.push(new Passageiro('Luigi Silva', 'assets/img/luigi.png'));
+        this._passageiros.push(new Passageiro('Yoshi Dino', 'assets/img/Yoshi.png'));
+        this._passageiros.push(new Passageiro('Mario Bross', 'assets/img/mario.png'));
+        this._passageiros.push(new Passageiro('Luigi Silva', 'assets/img/luigi.png'));
+        this._passageiros.push(new Passageiro('Yoshi Dino', 'assets/img/Yoshi.png'));
+        this._passageiros.push(new Passageiro('Mario Bross', 'assets/img/mario.png'));
+        this._passageiros.push(new Passageiro('Luigi Silva', 'assets/img/luigi.png'));
+        this._passageiros.push(new Passageiro('Yoshi Dino', 'assets/img/Yoshi.png'));
     }
 
-    get passageiros(){
+    get passageiros() {
         return this._passageiros;
     }
 
-    iniciaViagem(){
-        this.navCtrl.push(ViagemPage);
+    selecionaPassageiros(ligado: boolean, passageiro: Passageiro) {
+
+        if (ligado) {
+            this._passageirosSelecionados.push(passageiro);
+        } else {
+            let index = this._passageirosSelecionados.indexOf(passageiro);
+            if (index>=0)
+                this._passageirosSelecionados.splice(index, 1);
+        }
+    }
+
+    iniciaViagem() {
+        this.navCtrl.push(ViagemPage, {
+            passageirosSelecionados: this._passageirosSelecionados
+        });
     }
 
 }

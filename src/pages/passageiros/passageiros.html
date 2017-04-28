@@ -7,7 +7,6 @@
 </ion-header>
 
 <ion-content padding>
-
     <ion-searchbar ></ion-searchbar>
     <ion-item-group>
         <ion-list>
@@ -16,7 +15,8 @@
                     <img src="{{passageiro.foto}}">
                 </ion-avatar>
                 <ion-label>{{passageiro.nome}}</ion-label>
-                <ion-toggle #toggle color="secondary"></ion-toggle>
+                <ion-toggle #toggle color="secondary" 
+                    (ionChange)="selecionaPassageiros(toggle.checked, passageiro)"></ion-toggle>
             </ion-item>
         </ion-list>
     </ion-item-group>
