@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-item-group>
+    <ion-item-group *ngIf="passageirosEmbarcados.length > 0">
         <ion-list>
             <ion-list-header>
                 Passageiros Embarcados
@@ -22,7 +22,7 @@
             </ion-item>
         </ion-list>
     </ion-item-group>
-    <ion-item-group>
+    <ion-item-group *ngIf="passageirosDesembarcados.length > 0">
         <ion-list>
             <ion-list-header>
                 Passageiros Desembarcados

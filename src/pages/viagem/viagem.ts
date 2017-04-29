@@ -49,10 +49,10 @@ export class ViagemPage {
     desembarca(passageiro: Passageiro){
 
         passageiro.posicaoGlobal = this._posicaoGlobalService.posicaoGlobal;
+        passageiro.embarcado = false;
         //**Consistir passageiro */
         // Emitir aviso mãe
         
-        passageiro.embarcado = false;
         this._passageirosDesembarcados.push(passageiro);
         this._passageirosEmbarcados.splice(
             this._passageirosEmbarcados.indexOf(passageiro), 1
