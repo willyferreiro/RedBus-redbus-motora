@@ -1,15 +1,13 @@
 import { PosicaoGlobal } from "../PosicaoGlobal/PosicaoGlobal";
 
-export class Passageiro{
+export class Motorista{
 
     constructor(
         public id: number,
         public telefone: number,
         public nome: string,
-        public foto: string,
+        public senha: string = "",
         public emViagem: boolean = false,
-        public embarcado: boolean = false,
-        public posicaoGlobal: PosicaoGlobal = null)
-    {}
-
+        public posicaoGlobal: PosicaoGlobal = null
+    ){}
 }

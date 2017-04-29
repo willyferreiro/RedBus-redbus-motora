@@ -3,6 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
+import { Geolocation } from '@ionic-native/geolocation';
+import { PosicaoGlobalService } from "../domain/PosicaoGlobal/PosicaoGlobal-Service";
+
 import { PassageiroPage } from '../pages/passageiro/passageiro';
 import { PassageirosPage } from '../pages/passageiros/passageiros';
 import { ViagemPage } from '../pages/viagem/viagem';
@@ -37,6 +40,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     StatusBar,
     SplashScreen,
+    Geolocation,
+    PosicaoGlobalService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
