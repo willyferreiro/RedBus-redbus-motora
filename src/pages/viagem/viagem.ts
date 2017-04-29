@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController} from 'ionic-angular';
 import { PassageirosPage } from '../passageiros/passageiros';
-import { Motorista } from "../../domain/Motorista/Motorista";
-import { Passageiro } from "../../domain/Passageiro/Passageiro";
-import { PosicaoGlobalService } from "../../domain/PosicaoGlobal/PosicaoGlobal-Service";
+import { Motorista } from "../../domain/motorista/motorista";
+import { Passageiro } from "../../domain/passageiro/passageiro";
+import { PosicaoGlobalService } from "../../domain/posicaoglobal/posicaoglobal-service";
 
 @Component({
     selector: 'page-viagem',

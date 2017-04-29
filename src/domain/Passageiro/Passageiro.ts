@@ -1,4 +1,4 @@
-import { PosicaoGlobal } from "../PosicaoGlobal/PosicaoGlobal";
+import { PosicaoGlobal } from "../posicaoglobal/posicaoglobal";
 
 export class Passageiro{
 

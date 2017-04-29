@@ -1,10 +1,12 @@
 import { NgModule, ErrorHandler } from '@angular/core';
+import { HttpModule } from "@angular/http";
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { Geolocation } from '@ionic-native/geolocation';
-import { PosicaoGlobalService } from "../domain/PosicaoGlobal/PosicaoGlobal-Service";
+import { PosicaoGlobalService } from "../domain/posicaoglobal/posicaoglobal-service";
+import { PassageiroService } from "../domain/passageiro/passageiro-service";
 
 import { PassageiroPage } from '../pages/passageiro/passageiro';
 import { PassageirosPage } from '../pages/passageiros/passageiros';
@@ -25,7 +27,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     TabsPage
   ],
   imports: [
-    BrowserModule,
+    BrowserModule, 
+    HttpModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -40,8 +43,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     StatusBar,
     SplashScreen,
+    HttpModule,
     Geolocation,
     PosicaoGlobalService,
+    PassageiroService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

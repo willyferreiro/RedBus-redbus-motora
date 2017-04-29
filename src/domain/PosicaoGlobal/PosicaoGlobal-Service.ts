@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation';
-import { PosicaoGlobal } from "./PosicaoGlobal";
+import { PosicaoGlobal } from "./posicaoglobal";
 
 @Injectable()
 export class PosicaoGlobalService {

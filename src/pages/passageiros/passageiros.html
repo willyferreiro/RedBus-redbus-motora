@@ -7,10 +7,10 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-searchbar ></ion-searchbar>
+    <ion-searchbar (ionInput)="search($event)"></ion-searchbar>
     <ion-item-group>
         <ion-list>
-            <ion-item *ngFor="let passageiro of passageiros">
+            <ion-item  *ngFor="let passageiro of passageiros">
                 <ion-avatar item-left>
                     <img src="{{passageiro.foto}}">
                 </ion-avatar>
