@@ -1,15 +1,18 @@
-import { PosicaoGlobal } from "../posicaoglobal/posicaoglobal";
-
 export class Passageiro{
 
     constructor(
         public id: number,
-        public telefone: number,
+        public idResponsavel: number,
+        public idMotorista: number,
         public nome: string,
-        public foto: string,
         public emViagem: boolean = false,
         public embarcado: boolean = false,
-        public posicaoGlobal: PosicaoGlobal = null)
+        public enderecoCasa: string = '',
+        public enderecoEscola: string = '',
+        public foto: string = '',
+        public fotoCompleta: string = '',
+        public posicao_latitude: number = 0,
+        public posicao_longitude: number = 0)
     {}
 
 }

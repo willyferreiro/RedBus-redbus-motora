@@ -35,7 +35,8 @@ export class ViagemPage {
 
     embarca(passageiro: Passageiro){
      
-        passageiro.posicaoGlobal = this._posicaoGlobalService.posicaoGlobal;
+        passageiro.posicao_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
+        passageiro.posicao_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
         passageiro.embarcado = true;
         //**Consistir passageiro */
         // Emitir aviso mãe
@@ -48,7 +49,8 @@ export class ViagemPage {
     
     desembarca(passageiro: Passageiro){
 
-        passageiro.posicaoGlobal = this._posicaoGlobalService.posicaoGlobal;
+        passageiro.posicao_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
+        passageiro.posicao_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
         passageiro.embarcado = false;
         //**Consistir passageiro */
         // Emitir aviso mãe
@@ -77,7 +79,8 @@ export class ViagemPage {
     private _confirmaFinalizacao(){
         //Atualiza a lista de passageiros embarcados, considerando posição atual do motorista
         this._passageirosEmbarcados.forEach(passageiro => {
-            passageiro.posicaoGlobal = this._posicaoGlobalService.posicaoGlobal;
+            passageiro.posicao_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
+            passageiro.posicao_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
             passageiro.emViagem = false;
             passageiro.embarcado = false;
         })

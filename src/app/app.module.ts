@@ -4,6 +4,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
+
 import { Geolocation } from '@ionic-native/geolocation';
 import { PosicaoGlobalService } from "../domain/posicaoglobal/posicaoglobal-service";
 import { PassageiroService } from "../domain/passageiro/passageiro-service";
