@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController} from 'ionic-angular';
 import { PassageirosPage } from '../passageiros/passageiros';
 import { Motorista } from "../../domain/motorista/motorista";
-import { Passageiro } from "../../domain/passageiro/passageiro";
+import { Filho } from "../../domain/filho/filho";
 import { PosicaoGlobalService } from "../../domain/posicaoglobal/posicaoglobal-service";
 
 @Component({
@@ -11,8 +11,8 @@ import { PosicaoGlobalService } from "../../domain/posicaoglobal/posicaoglobal-s
 })
 export class ViagemPage {
 
-    private _passageirosDesembarcados: Passageiro[] = [];
-    private _passageirosEmbarcados: Passageiro[] = [];
+    private _passageiroDesembarcados: Filho[] = [];
+    private _passageiroEmbarcados: Filho[] = [];
     private _motorista: Motorista;
 
     constructor(
@@ -21,19 +21,19 @@ export class ViagemPage {
         private _posicaoGlobalService: PosicaoGlobalService,
         private _alertCtrl: AlertController){
 
-        this._passageirosDesembarcados = navParams.get('passageirosSelecionados');
+        this._passageiroDesembarcados = navParams.get('passageirosSelecionados');
         this._motorista = navParams.get('motorista');
     }
 
     get passageirosDesembarcados(){
-        return this._passageirosDesembarcados;
+        return this._passageiroDesembarcados;
     }
 
     get passageirosEmbarcados(){
-        return this._passageirosEmbarcados;
+        return this._passageiroEmbarcados;
     }
 
-    embarca(passageiro: Passageiro){
+    embarca(passageiro: Filho){
      
         passageiro.posicao_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
         passageiro.posicao_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
@@ -41,13 +41,13 @@ export class ViagemPage {
         //**Consistir passageiro */
         // Emitir aviso mãe
 
-        this._passageirosEmbarcados.push(passageiro);
-        this._passageirosDesembarcados.splice(
-            this._passageirosDesembarcados.indexOf(passageiro), 1
+        this._passageiroEmbarcados.push(passageiro);
+        this._passageiroDesembarcados.splice(
+            this._passageiroDesembarcados.indexOf(passageiro), 1
         );
     }
     
-    desembarca(passageiro: Passageiro){
+    desembarca(passageiro: Filho){
 
         passageiro.posicao_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
         passageiro.posicao_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
@@ -55,15 +55,15 @@ export class ViagemPage {
         //**Consistir passageiro */
         // Emitir aviso mãe
         
-        this._passageirosDesembarcados.push(passageiro);
-        this._passageirosEmbarcados.splice(
-            this._passageirosEmbarcados.indexOf(passageiro), 1
+        this._passageiroDesembarcados.push(passageiro);
+        this._passageiroEmbarcados.splice(
+            this._passageiroEmbarcados.indexOf(passageiro), 1
         );
     }
 
     finaliza(){
 
-        if (this._passageirosEmbarcados.length > 0){
+        if (this._passageiroEmbarcados.length > 0){
             this._alertCtrl.create({
                 title: 'Aviso Viagem',
                 subTitle: "Ainda existem passageiros embarcados. Deseja encerrar mesmo assim?",
@@ -77,12 +77,12 @@ export class ViagemPage {
     }
 
     private _confirmaFinalizacao(){
-        //Atualiza a lista de passageiros embarcados, considerando posição atual do motorista
-        this._passageirosEmbarcados.forEach(passageiro => {
-            passageiro.posicao_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
-            passageiro.posicao_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
-            passageiro.emViagem = false;
-            passageiro.embarcado = false;
+        //Atualiza a lista de filhos embarcados, considerando posição atual do motorista
+        this._passageiroEmbarcados.forEach(filho => {
+            filho.posicao_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
+            filho.posicao_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
+            filho.emViagem = false;
+            filho.embarcado = false;
         })
         this.navCtrl.setRoot(PassageirosPage);
     }

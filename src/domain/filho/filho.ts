@@ -1,4 +1,4 @@
-export class Passageiro{
+export class Filho{
 
     constructor(
         public id: number,
@@ -9,8 +9,8 @@ export class Passageiro{
         public embarcado: boolean = false,
         public enderecoCasa: string = '',
         public enderecoEscola: string = '',
-        public foto: string = '',
-        public fotoCompleta: string = '',
+        public foto: ByteString = '',
+        public fotoCompleta: ByteString = '',
         public posicao_latitude: number = 0,
         public posicao_longitude: number = 0)
     {}

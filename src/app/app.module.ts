@@ -9,7 +9,8 @@ import 'rxjs/add/operator/toPromise';
 
 import { Geolocation } from '@ionic-native/geolocation';
 import { PosicaoGlobalService } from "../domain/posicaoglobal/posicaoglobal-service";
-import { PassageiroService } from "../domain/passageiro/passageiro-service";
+import { FilhoService } from "../domain/filho/filho-service";
+import { ViagemService } from "../domain/viagem/viagem-service";
 
 import { PassageiroPage } from '../pages/passageiro/passageiro';
 import { PassageirosPage } from '../pages/passageiros/passageiros';
@@ -49,7 +50,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     HttpModule,
     Geolocation,
     PosicaoGlobalService,
-    PassageiroService,
+    FilhoService,
+    ViagemService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

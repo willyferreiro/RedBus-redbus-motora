@@ -1,13 +1,18 @@
 import { PosicaoGlobal } from "../posicaoglobal/posicaoglobal";
+import { Usuario } from "../usuario/usuario";
+import { Filho } from "../filho/filho";
+import { Viagem } from "../viagem/viagem";
 
 export class Motorista{
 
     constructor(
-        public id: number,
-        public telefone: number,
-        public nome: string,
-        public senha: string = "",
-        public emViagem: boolean = false,
-        public posicaoGlobal: PosicaoGlobal = null
+
+        public Usuario: Usuario,
+        public emViagem: boolean,
+        public posicao_Latitude: number,
+        public posicao_longitude: number,
+        public foto: ByteString,
+        public Filhos: Filho[] = [],
+        public Viagens: Viagem[] = []
     ){}
 }
