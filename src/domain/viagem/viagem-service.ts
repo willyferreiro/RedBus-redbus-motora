@@ -17,9 +17,13 @@ export class ViagemService{
         headers.append('Content-Type', 'application/json');
         
         let api = Parametros.baseUri() + `api/viagem/${viagem}`;
+        
+        console.log(JSON.stringify(viagem));
+
+        var obj = `{"idMotorista":${viagem.idMotorista},"posicaoInicio_latitude":${viagem.posicaoInicio_latitude},"posicaoInicio_longitude":${viagem.posicaoInicio_longitude},"statusViagem":${viagem.statusViagem},"Viagem_Filho":${JSON.stringify(viagem.Viagem_Filho)}}`;
 
         return this._http
-            .post(api, JSON.stringify(viagem), { headers: headers })
+            .post(api, obj, { headers: headers })
             .map(res => res.json())
             .toPromise();
     }

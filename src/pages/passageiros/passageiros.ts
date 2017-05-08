@@ -33,7 +33,7 @@ export class PassageirosPage implements OnInit {
     ngOnInit() {
 
         let loader = this._loadingCtrl.create({
-            content: 'Buscando novos carros. Aguarde ...'
+            content: 'Buscando passageiros. Aguarde ...'
         });
 
         loader.present();
@@ -103,7 +103,7 @@ export class PassageirosPage implements OnInit {
             this._posicaoGlobalService.posicaoGlobal.latitude,
             this._posicaoGlobalService.posicaoGlobal.longitude
         );
-        viagem.Motorista = this._motorista;
+        //viagem.Motorista = this._motorista;
         viagem.statusViagem = StatusViagem.Andamento;
         
         this._passageiroSelecionados.forEach(passageiro => {
@@ -116,23 +116,20 @@ export class PassageirosPage implements OnInit {
             );
         });
 
-
+        
+        console.log(viagem);
+        
         this._viagemservice.iniciaViagem(viagem)
         .then(() => {
             this.navCtrl.push(ViagemPage, {
-            passageirosSelecionados: this._passageiroSelecionados,
-            motorista: this._motorista
-        });
+                passageirosSelecionados: this._passageiroSelecionados,
+                motorista: this._motorista
+            });
         }, err => { 
             console.log(err);
         })
         
         //emitir alerta mae
-
-        this.navCtrl.push(ViagemPage, {
-            passageirosSelecionados: this._passageiroSelecionados,
-            motorista: this._motorista
-        });
     }
 
 }
