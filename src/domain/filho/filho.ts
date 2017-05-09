@@ -1,7 +1,7 @@
 export class Filho{
 
     constructor(
-        public id: number,
+        public idFilho: number,
         public idResponsavel: number,
         public idMotorista: number,
         public nome: string,

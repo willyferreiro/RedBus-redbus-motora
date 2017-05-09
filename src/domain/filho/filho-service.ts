@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from "@angular/http";
+import { Http, Headers } from "@angular/http";
 
 import { Filho } from "./filho";
 import { Parametros } from "../util/parametros";
@@ -13,18 +13,19 @@ export class FilhoService{
         
         //* Buscar dados do motorista
         let api = Parametros.baseUri() + `api/passageiros/${1}`;
-        
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
         let passageiros: Filho[] = []; 
 
         return this._http
-            .get(api)
+            .get(api, { headers: headers })
             .map(res => res.json())
             .map(data => {
-                console.log(data);
                 
                 data.forEach(filho => {
                     passageiros.push(new Filho (
-                        filho.id,
+                        filho.idFilho,
                         filho.idResponsavel,
                         filho.idMotorista,
                         filho.nome,
@@ -40,5 +41,17 @@ export class FilhoService{
                 });
                 return passageiros;
             }).toPromise();
+    }
+
+    atualizaPassageiros(filho: Filho){
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+          
+        let api = Parametros.baseUri() + `api/filho/${filho.idFilho}`;
+
+        return this._http
+            .put(api, JSON.stringify(filho), { headers: headers })
+            .map(res => res.json())
     }
 }
