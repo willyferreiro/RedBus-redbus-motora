@@ -9,7 +9,7 @@ export class Motorista{
 
         public Usuario: Usuario,
         public emViagem: boolean,
-        public posicao_Latitude: number,
+        public posicao_latitude: number,
         public posicao_longitude: number,
         public foto: ByteString,
         public Filhos: Filho[] = [],

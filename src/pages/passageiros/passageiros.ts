@@ -40,18 +40,21 @@ export class PassageirosPage implements OnInit {
 
         loader.present();
 
-        //obter dados motorista
-        let usuario = new Usuario(1, 1111111, "Toninho da Van", "M");
-        this._motorista = new Motorista(usuario , false,
-            this._posicaoGlobalService.posicaoGlobal.latitude,
-            this._posicaoGlobalService.posicaoGlobal.longitude,
-            null);
+        //*** obter dados do usuario da sessao
+        let idUsuario = 1;
+        this._motoristaService.getMotorista(idUsuario)
+        .then((motorista) => {
+            this._motorista = motorista;
 
-        this._filhoservice.listaPassageiros()
-        .then((passageiros) => {
-            this._passageiro = passageiros;
-            this._passageiroOriginal = this._passageiro;
-            loader.dismiss();
+            this._filhoservice.listaPassageiros()
+            .then((passageiros) => {
+                this._passageiro = passageiros;
+                this._passageiroOriginal = this._passageiro;
+                loader.dismiss();
+            }, err => { 
+                console.log(err);
+                loader.dismiss();
+            })
         }, err => { 
             console.log(err);
             loader.dismiss();
@@ -89,7 +92,7 @@ export class PassageirosPage implements OnInit {
     iniciaViagem() {
 
         this._motorista.emViagem = true;
-        this._motorista.posicao_Latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
+        this._motorista.posicao_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
         this._motorista.posicao_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
 
         let viagem = new Viagem(
@@ -98,12 +101,15 @@ export class PassageirosPage implements OnInit {
             this._posicaoGlobalService.posicaoGlobal.latitude,
             this._posicaoGlobalService.posicaoGlobal.longitude
         );
-        
+        viagem.Motorista = this._motorista;
+
         viagem.statusViagem = StatusViagem.Andamento;
         viagem.dataInicioViagem = new Date();
 
         this._passageiroSelecionados.forEach(passageiro => {
-             viagem.Viagem_Filho.push(new ViagemFilho( null, passageiro.idFilho));
+            let vf = new ViagemFilho( null, passageiro.idFilho);
+            vf.Filho = passageiro;
+            viagem.Viagem_Filho.push();
         });
    
         this._viagemservice.iniciaViagem(viagem)
@@ -111,15 +117,15 @@ export class PassageirosPage implements OnInit {
             this._motoristaService.atualizaMotorista(this._motorista);
 
             //Atualiza status dos filhos em viagem
-            this._passageiroSelecionados.forEach(filho => {
-                filho.emViagem = true;
-                this._filhoservice.atualizaPassageiros(filho);
-            })
+            // this._passageiroSelecionados.forEach(filho => {
+            //     filho.emViagem = true;
+            //     this._filhoservice.atualizaPassageiros(filho);
+            // })
 
-            this.navCtrl.push(ViagemPage, {
-                passageirosSelecionados: this._passageiroSelecionados,
-                motorista: this._motorista
-            });
+            // this.navCtrl.push(ViagemPage, {
+            //     passageirosSelecionados: this._passageiroSelecionados,
+            //     motorista: this._motorista
+            // });
 
         }, err => { 
             console.log(err);
