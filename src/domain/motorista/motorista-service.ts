@@ -29,6 +29,7 @@ export class MotoristaService{
                         dado.Usuario.tipoUsuario,
                         dado.Usuario.senha
                     ),
+                    dado.idUsuario,
                     dado.emViagem,
                     dado.posicao_latitude,
                     dado.posicao_longitude,

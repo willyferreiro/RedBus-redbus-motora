@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController} from 'ionic-angular';
 import { PassageirosPage } from '../passageiros/passageiros';
 import { Motorista } from "../../domain/motorista/motorista";
-import { Filho } from "../../domain/filho/filho";
 import { PosicaoGlobalService } from "../../domain/posicaoglobal/posicaoglobal-service";
+import { ViagemService } from "../../domain/viagem/viagem-service";
+import { Viagem } from "../../domain/viagem/viagem";
+import { ViagemFilho } from "../../domain/viagem/viagem-filho";
 
 @Component({
     selector: 'page-viagem',
@@ -11,62 +13,77 @@ import { PosicaoGlobalService } from "../../domain/posicaoglobal/posicaoglobal-s
 })
 export class ViagemPage {
 
-    private _passageiroDesembarcados: Filho[] = [];
-    private _passageiroEmbarcados: Filho[] = [];
+    private _viagemPassageiroDesembarcados: ViagemFilho[] = [];
+    private _viagemPassageiroEmbarcados: ViagemFilho[] = [];
+    private _viagemPassageiroEntregues: ViagemFilho[] = [];
     private _motorista: Motorista;
+    private _viagem: Viagem;
 
     constructor(
         public navCtrl: NavController,
         public navParams: NavParams,
         private _posicaoGlobalService: PosicaoGlobalService,
+        private _viagemService: ViagemService,
         private _alertCtrl: AlertController){
 
-        this._passageiroDesembarcados = navParams.get('passageirosSelecionados');
+        this._viagem = navParams.get('Viagem');
+        this._viagem.ViagemFilho.forEach((viagemfilho) => {
+            this._viagemPassageiroDesembarcados.push(viagemfilho);
+        });
+        
         this._motorista = navParams.get('motorista');
     }
 
-    get passageirosDesembarcados(){
-        return this._passageiroDesembarcados;
+    get viagemPassageirosDesembarcados(){
+        return this._viagemPassageiroDesembarcados;
     }
 
-    get passageirosEmbarcados(){
-        return this._passageiroEmbarcados;
+    get viagemPassageirosEmbarcados(){
+        return this._viagemPassageiroEmbarcados;
     }
 
-    embarca(passageiro: Filho){
+    get viagemPassageirosEntregues(){
+        return this._viagemPassageiroEntregues;
+    }
+
+    embarca(viagemPassageiro: ViagemFilho){
      
-        passageiro.posicao_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
-        passageiro.posicao_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
-        passageiro.embarcado = true;
-        //**Consistir passageiro */
-        // Emitir aviso mãe
+        viagemPassageiro.posicaoEmbarque_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
+        viagemPassageiro.posicaoEmbarque_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
+        viagemPassageiro.Filho.embarcado = true;
 
-        this._passageiroEmbarcados.push(passageiro);
-        this._passageiroDesembarcados.splice(
-            this._passageiroDesembarcados.indexOf(passageiro), 1
-        );
+        this._viagemService.atualizaViagemPassageiro(viagemPassageiro)
+            .then(() => {
+                 //** Emitir aviso mãe
+                 this._viagemPassageiroDesembarcados.splice(
+                    this._viagemPassageiroDesembarcados.indexOf(viagemPassageiro), 1
+                );
+                this._viagemPassageiroEmbarcados.push(viagemPassageiro);
+            })
     }
     
-    desembarca(passageiro: Filho){
+    desembarca(viagemPassageiro: ViagemFilho){
 
-        passageiro.posicao_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
-        passageiro.posicao_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
-        passageiro.embarcado = false;
-        //**Consistir passageiro */
-        // Emitir aviso mãe
-        
-        this._passageiroDesembarcados.push(passageiro);
-        this._passageiroEmbarcados.splice(
-            this._passageiroEmbarcados.indexOf(passageiro), 1
+        this._viagemPassageiroEmbarcados.splice(
+            this._viagemPassageiroEmbarcados.indexOf(viagemPassageiro), 1
         );
+
+        viagemPassageiro.posicaoDesembarque_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
+        viagemPassageiro.posicaoDesembarque_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
+        viagemPassageiro.Filho.embarcado = false;
+        viagemPassageiro.Filho.emViagem = false;
+        //**Consistir viagemPassageiro */
+        //** Emitir aviso mãe
+        
+        this._viagemPassageiroEntregues.push(viagemPassageiro);
     }
 
     finaliza(){
 
-        if (this._passageiroEmbarcados.length > 0){
+        if (this._viagemPassageiroEmbarcados.length > 0){
             this._alertCtrl.create({
                 title: 'Aviso Viagem',
-                subTitle: "Ainda existem passageiros embarcados. Deseja encerrar mesmo assim?",
+                subTitle: "Ainda existem viagemPassageiros embarcados. Deseja encerrar mesmo assim?",
                 buttons:[
                     { text: 'Cancelar'},
                     { text: 'Confirmar', handler: () => this._confirmaFinalizacao() }]
@@ -77,12 +94,14 @@ export class ViagemPage {
     }
 
     private _confirmaFinalizacao(){
-        //Atualiza a lista de filhos embarcados, considerando posição atual do motorista
-        this._passageiroEmbarcados.forEach(filho => {
-            filho.posicao_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
-            filho.posicao_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
-            filho.emViagem = false;
-            filho.embarcado = false;
+        //** Atualiza a lista de filhos embarcados, considerando posição atual do motorista
+        this._viagemPassageiroEmbarcados.forEach(viagemPassageiro => {
+            viagemPassageiro.posicaoDesembarque_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
+            viagemPassageiro.posicaoDesembarque_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
+            viagemPassageiro.Filho.emViagem = false;
+            viagemPassageiro.Filho.embarcado = false;
+
+            this._viagemPassageiroEntregues.push(viagemPassageiro);
         })
         this.navCtrl.setRoot(PassageirosPage);
     }

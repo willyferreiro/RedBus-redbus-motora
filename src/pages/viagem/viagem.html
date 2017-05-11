@@ -7,33 +7,46 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-item-group *ngIf="passageirosEmbarcados.length > 0">
+    <ion-item-group *ngIf="viagemPassageirosEmbarcados.length > 0">
         <ion-list>
-            <ion-list-header>
+            <ion-list-header style="background-color:navajowhite">
                 Passageiros Embarcados
             </ion-list-header>
-            <ion-item *ngFor="let passageiro of passageirosEmbarcados">
+            <ion-item *ngFor="let viagemPassageiro of viagemPassageirosEmbarcados">
                 <ion-avatar item-left>
-                    <img src="{{passageiro.foto}}">
+                    <img src="{{viagemPassageiro.Filho.foto}}">
                 </ion-avatar>
-                <ion-label>{{passageiro.nome}}</ion-label>
+                <ion-label>{{viagemPassageiro.Filho.nome}}</ion-label>
                 <button ion-button item-right color="danger"
-                    (click)="desembarca(passageiro)">Desembarcar</button>
+                    (click)="desembarca(viagemPassageiro)">Desembarcar</button>
             </ion-item>
         </ion-list>
     </ion-item-group>
-    <ion-item-group *ngIf="passageirosDesembarcados.length > 0">
+    <ion-item-group *ngIf="viagemPassageirosDesembarcados.length > 0">
         <ion-list>
-            <ion-list-header>
+            <ion-list-header style="background-color:lightcoral">
                 Passageiros Desembarcados
             </ion-list-header>
-            <ion-item *ngFor="let passageiro of passageirosDesembarcados">
+            <ion-item *ngFor="let viagemPassageiro of viagemPassageirosDesembarcados">
                 <ion-avatar item-left>
-                    <img src="{{passageiro.foto}}">
+                    <img src="{{viagemPassageiro.Filho.foto}}">
                 </ion-avatar>
-                <ion-label>{{passageiro.nome}}</ion-label>
+                <ion-label>{{viagemPassageiro.Filho.nome}}</ion-label>
                 <button ion-button item-right color="secondary"
-                    (click)="embarca(passageiro)">Embarcar</button>
+                    (click)="embarca(viagemPassageiro)">Embarcar</button>
+            </ion-item>
+        </ion-list>
+    </ion-item-group>
+    <ion-item-group *ngIf="viagemPassageirosEntregues.length > 0">
+        <ion-list>
+            <ion-list-header style="background-color:yellowgreen">
+                Passageiros Entregues
+            </ion-list-header>
+            <ion-item *ngFor="let viagemPassageiro of viagemPassageirosEntregues">
+                <ion-avatar item-left>
+                    <img src="{{viagemPassageiro.Filho.foto}}">
+                </ion-avatar>
+                <ion-label>{{viagemPassageiro.Filho.nome}}</ion-label>
             </ion-item>
         </ion-list>
     </ion-item-group>

@@ -7,12 +7,12 @@ export class Filho{
         public nome: string,
         public emViagem: boolean = false,
         public embarcado: boolean = false,
-        public enderecoCasa: string = '',
-        public enderecoEscola: string = '',
+        posicao_latitudeCasa: number = 0,
+        posicao_longitutdeCasa: number = 0,
+        posicao_latitudeEscola: number = 0,
+        posicao_longitutdeEscola: number = 0,
         public foto: ByteString = '',
-        public fotoCompleta: ByteString = '',
-        public posicao_latitude: number = 0,
-        public posicao_longitude: number = 0)
+        public fotoCompleta: ByteString = '')
     {}
 
 }

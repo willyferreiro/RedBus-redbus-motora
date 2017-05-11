@@ -15,7 +15,7 @@ export class Viagem{
         public posicaoFim_longitude: number = 0,
         public statusViagem: StatusViagem = StatusViagem.NaoIniciada,
         public Motorista: Motorista = null,
-        public Viagem_Filho: ViagemFilho[] = []
+        public ViagemFilho: ViagemFilho[] = []
     ){}
 
     // get Viagem_Status(){

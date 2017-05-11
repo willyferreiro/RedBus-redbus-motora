@@ -8,7 +8,6 @@ import { MotoristaService } from "../../domain/motorista/motorista-service";
 import { Viagem, StatusViagem } from "../../domain/viagem/viagem";
 import { ViagemFilho } from "../../domain/viagem/viagem-filho";
 import { ViagemService } from "../../domain/viagem/viagem-service";
-import { Usuario } from "../../domain/usuario/usuario";
 import { PosicaoGlobalService } from "../../domain/posicaoglobal/posicaoglobal-service";
 
 @Component({
@@ -35,7 +34,7 @@ export class PassageirosPage implements OnInit {
     ngOnInit() {
 
         let loader = this._loadingCtrl.create({
-            content: 'Buscando passageiros. Aguarde ...'
+            content: 'Buscando passageiros. Aguarde...'
         });
 
         loader.present();
@@ -45,7 +44,7 @@ export class PassageirosPage implements OnInit {
         this._motoristaService.getMotorista(idUsuario)
         .then((motorista) => {
             this._motorista = motorista;
-
+            
             this._filhoservice.listaPassageiros()
             .then((passageiros) => {
                 this._passageiro = passageiros;
@@ -102,6 +101,7 @@ export class PassageirosPage implements OnInit {
             this._posicaoGlobalService.posicaoGlobal.longitude
         );
         viagem.Motorista = this._motorista;
+        viagem.idMotorista = this._motorista.idUsuario;
 
         viagem.statusViagem = StatusViagem.Andamento;
         viagem.dataInicioViagem = new Date();
@@ -109,23 +109,16 @@ export class PassageirosPage implements OnInit {
         this._passageiroSelecionados.forEach(passageiro => {
             let vf = new ViagemFilho( null, passageiro.idFilho);
             vf.Filho = passageiro;
-            viagem.Viagem_Filho.push();
+            vf.Filho.emViagem = true;
+
+            viagem.ViagemFilho.push(vf);
         });
    
         this._viagemservice.iniciaViagem(viagem)
         .then(() => {
             this._motoristaService.atualizaMotorista(this._motorista);
 
-            //Atualiza status dos filhos em viagem
-            // this._passageiroSelecionados.forEach(filho => {
-            //     filho.emViagem = true;
-            //     this._filhoservice.atualizaPassageiros(filho);
-            // })
-
-            // this.navCtrl.push(ViagemPage, {
-            //     passageirosSelecionados: this._passageiroSelecionados,
-            //     motorista: this._motorista
-            // });
+            this.navCtrl.push(ViagemPage, {Viagem: viagem});
 
         }, err => { 
             console.log(err);
