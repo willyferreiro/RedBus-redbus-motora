@@ -21,26 +21,7 @@ export class FilhoService{
         return this._http
             .get(api, { headers: headers })
             .map(res => res.json())
-            .map(data => {
-                
-                data.forEach(filho => {
-                    passageiros.push(new Filho (
-                        filho.idFilho,
-                        filho.idResponsavel,
-                        filho.idMotorista,
-                        filho.nome,
-                        filho.emViagem,
-                        filho.embarcado,
-                        filho.enderecoCasa,
-                        filho.enderecoEscola,
-                        filho.foto,
-                        filho.fotoCompleta,
-                        filho.posicao_latitude, 
-                        filho.posicao_longitude
-                    ))
-                });
-                return passageiros;
-            }).toPromise();
+            .toPromise();
     }
 
     atualizaPassageiros(filho: Filho){

@@ -9,6 +9,7 @@ import { Viagem, StatusViagem } from "../../domain/viagem/viagem";
 import { ViagemFilho } from "../../domain/viagem/viagem-filho";
 import { ViagemService } from "../../domain/viagem/viagem-service";
 import { PosicaoGlobalService } from "../../domain/posicaoglobal/posicaoglobal-service";
+import { InicioViagemDTO } from "../viagem/inicioViagemDTO";
 
 @Component({
     selector: 'page-passageiros',
@@ -51,6 +52,7 @@ export class PassageirosPage implements OnInit {
                 this._passageiroOriginal = this._passageiro;
                 loader.dismiss();
             }, err => { 
+                //*** COLOCAR PAGINA DE ERRO */
                 console.log(err);
                 loader.dismiss();
             })
@@ -90,39 +92,26 @@ export class PassageirosPage implements OnInit {
 
     iniciaViagem() {
 
-        this._motorista.emViagem = true;
-        this._motorista.posicao_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
-        this._motorista.posicao_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
-
-        let viagem = new Viagem(
-            null,
-            this._motorista.Usuario.idUsuario,
-            this._posicaoGlobalService.posicaoGlobal.latitude,
-            this._posicaoGlobalService.posicaoGlobal.longitude
-        );
-        viagem.Motorista = this._motorista;
-        viagem.idMotorista = this._motorista.idUsuario;
-
-        viagem.statusViagem = StatusViagem.Andamento;
-        viagem.dataInicioViagem = new Date();
-
+        let idFilhos: number[] = [];
         this._passageiroSelecionados.forEach(passageiro => {
-            let vf = new ViagemFilho( null, passageiro.idFilho);
-            vf.Filho = passageiro;
-            vf.Filho.emViagem = true;
-
-            viagem.ViagemFilho.push(vf);
+            idFilhos.push(passageiro.idFilho);
         });
-   
-        this._viagemservice.iniciaViagem(viagem)
-        .then(() => {
-            this._motoristaService.atualizaMotorista(this._motorista);
 
+        let inicioViagem = new InicioViagemDTO(
+            this._motorista.idUsuario,
+            this._posicaoGlobalService.posicaoGlobal.latitude,
+            this._posicaoGlobalService.posicaoGlobal.latitude,
+            idFilhos
+        );
+   
+        this._viagemservice.iniciaViagem(inicioViagem)
+        .then((viagem: Viagem) => {
+            
             this.navCtrl.push(ViagemPage, {Viagem: viagem});
 
-        }, err => { 
+        }), err => { 
             console.log(err);
-        })
+        }
         
         //emitir alerta mae
     }

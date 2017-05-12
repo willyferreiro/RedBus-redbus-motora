@@ -4,13 +4,14 @@ import { Http, Headers } from "@angular/http";
 import { Viagem } from "./viagem";
 import { Parametros } from "../util/parametros";
 import { ViagemFilho } from "./viagem-filho";
+import { InicioViagemDTO } from "./inicioviagemdto";
 
 @Injectable()
 export class ViagemService{
 
     constructor(private _http: Http){}
 
-    iniciaViagem(viagem: Viagem){
+    iniciaViagem(viagemDTO: InicioViagemDTO){
         
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
@@ -18,7 +19,7 @@ export class ViagemService{
         let api = Parametros.baseUri() + "api/viagem";
         
         return this._http
-            .post(api, JSON.stringify(viagem), { headers: headers })
+            .post(api, JSON.stringify(viagemDTO), { headers: headers })
             .map(res => res.json())
             .toPromise();
     }
