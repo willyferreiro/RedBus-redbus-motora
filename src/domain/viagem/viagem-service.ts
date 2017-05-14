@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from "@angular/http";
-
-import { Viagem } from "./viagem";
 import { Parametros } from "../util/parametros";
 import { ViagemFilho } from "./viagem-filho";
+import { AtualizaPassageiroDTO } from "./atualiza-passageiro-dto";
 import { InicioViagemDTO } from "./inicioviagemdto";
 
 @Injectable()
@@ -24,17 +23,28 @@ export class ViagemService{
             .toPromise();
     }
 
-    atualizaViagemPassageiro(viagemFilho: ViagemFilho){
+    getViagemPassageiro(idViagem: number, idFilho: number){
         
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         
-        console.log(viagemFilho);
-
-        let api = Parametros.baseUri() + `api/viagemFilho/${viagemFilho.idViagem}/${viagemFilho.idFilho}`;
+        let api = Parametros.baseUri() + `api/viagemFilho/${idViagem}/${idFilho}`;
 
         return this._http
-            .put(api, JSON.stringify(viagemFilho), { headers: headers })
+            .get(api, { headers: headers })
+            .map(res => res.json())
+            .toPromise();
+    }
+
+    atualizaPassageiro(passageiro: AtualizaPassageiroDTO){
+        
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        
+          let api = Parametros.baseUri() + `api/passageiro/${passageiro.idViagem}/${passageiro.idFilho}`;
+
+        return this._http
+            .put(api, JSON.stringify(passageiro), { headers: headers })
             .map(res => res.json())
             .toPromise();
     }

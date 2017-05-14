@@ -6,6 +6,10 @@ import { PosicaoGlobalService } from "../../domain/posicaoglobal/posicaoglobal-s
 import { ViagemService } from "../../domain/viagem/viagem-service";
 import { Viagem } from "../../domain/viagem/viagem";
 import { ViagemFilho } from "../../domain/viagem/viagem-filho";
+import { AtualizaPassageiroDTO } from "../../domain/viagem/atualiza-passageiro-dto";
+import { MotoristaService } from "../../domain/motorista/motorista-service";
+
+//import { moment } from 'node_modules/moment-timezone';
 
 @Component({
     selector: 'page-viagem',
@@ -23,6 +27,7 @@ export class ViagemPage {
         public navCtrl: NavController,
         public navParams: NavParams,
         private _posicaoGlobalService: PosicaoGlobalService,
+        private _motoristaService: MotoristaService,
         private _viagemService: ViagemService,
         private _alertCtrl: AlertController){
 
@@ -48,34 +53,58 @@ export class ViagemPage {
 
     embarca(viagemPassageiro: ViagemFilho){
      
-        viagemPassageiro.posicaoEmbarque_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
-        viagemPassageiro.posicaoEmbarque_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
-        viagemPassageiro.Filho.embarcado = true;
-
-        this._viagemService.atualizaViagemPassageiro(viagemPassageiro)
+        let passageiro = new AtualizaPassageiroDTO(
+            viagemPassageiro.idViagem,
+            viagemPassageiro.idFilho,
+            this._posicaoGlobalService.posicaoGlobal.latitude,
+            this._posicaoGlobalService.posicaoGlobal.longitude,
+            viagemPassageiro.Filho.embarcado = true
+        )
+        this._viagemService.atualizaPassageiro(passageiro)
             .then(() => {
                  //** Emitir aviso mãe
                  this._viagemPassageiroDesembarcados.splice(
                     this._viagemPassageiroDesembarcados.indexOf(viagemPassageiro), 1
                 );
-                this._viagemPassageiroEmbarcados.push(viagemPassageiro);
-            })
+                
+                this._viagemService.getViagemPassageiro(passageiro.idViagem, passageiro.idFilho)
+                .then((viagemPassageiroAtualizado) => {
+                    viagemPassageiro = viagemPassageiroAtualizado;
+                    this._viagemPassageiroEmbarcados.push(viagemPassageiro);
+                })
+            }),
+            err => {
+                console.log(err);
+                //** Adicionar tratamento de erro 
+            }
     }
     
     desembarca(viagemPassageiro: ViagemFilho){
 
-        this._viagemPassageiroEmbarcados.splice(
-            this._viagemPassageiroEmbarcados.indexOf(viagemPassageiro), 1
-        );
-
-        viagemPassageiro.posicaoDesembarque_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
-        viagemPassageiro.posicaoDesembarque_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
-        viagemPassageiro.Filho.embarcado = false;
-        viagemPassageiro.Filho.emViagem = false;
-        //**Consistir viagemPassageiro */
-        //** Emitir aviso mãe
-        
-        this._viagemPassageiroEntregues.push(viagemPassageiro);
+        let passageiro = new AtualizaPassageiroDTO(
+            viagemPassageiro.idViagem,
+            viagemPassageiro.idFilho,
+            this._posicaoGlobalService.posicaoGlobal.latitude,
+            this._posicaoGlobalService.posicaoGlobal.longitude,
+            viagemPassageiro.Filho.embarcado = false
+        )
+        this._viagemService.atualizaPassageiro(passageiro)
+            .then(() => {
+                 //** Emitir aviso mãe
+                 this._viagemPassageiroEmbarcados.splice(
+                    this._viagemPassageiroEmbarcados.indexOf(viagemPassageiro), 1
+                );
+                
+                this._viagemService.getViagemPassageiro(passageiro.idViagem, passageiro.idFilho)
+                .then((viagemPassageiroAtualizado) => {
+                    viagemPassageiro = viagemPassageiroAtualizado;
+                    this._viagemPassageiroEntregues.push(viagemPassageiro);
+                })
+            }),
+            err => {
+                console.log(err);
+                //** Adicionar tratamento de erro 
+            }
     }
 
     finaliza(){
@@ -94,15 +123,34 @@ export class ViagemPage {
     }
 
     private _confirmaFinalizacao(){
-        //** Atualiza a lista de filhos embarcados, considerando posição atual do motorista
+        
+        //Atualiza a lista de filhos embarcados, considerando posição atual do motorista
         this._viagemPassageiroEmbarcados.forEach(viagemPassageiro => {
-            viagemPassageiro.posicaoDesembarque_latitude = this._posicaoGlobalService.posicaoGlobal.latitude;
-            viagemPassageiro.posicaoDesembarque_longitude = this._posicaoGlobalService.posicaoGlobal.longitude;
-            viagemPassageiro.Filho.emViagem = false;
-            viagemPassageiro.Filho.embarcado = false;
 
-            this._viagemPassageiroEntregues.push(viagemPassageiro);
+            let passageiro = new AtualizaPassageiroDTO(
+                viagemPassageiro.idViagem,
+                viagemPassageiro.idFilho,
+                this._posicaoGlobalService.posicaoGlobal.latitude,
+                this._posicaoGlobalService.posicaoGlobal.longitude,
+                viagemPassageiro.Filho.embarcado = false
+            )
+            this._viagemService.atualizaPassageiro(passageiro)
+            .then(() => {
+                 //** Emitir aviso mãe
+                 this._viagemPassageiroEmbarcados.splice(
+                    this._viagemPassageiroEmbarcados.indexOf(viagemPassageiro), 1
+                );
+                this._viagemPassageiroEntregues.push(viagemPassageiro);
+
+                this._motorista.emViagem = false;
+                this._motoristaService.atualizaMotorista(this._motorista);
+
+                this.navCtrl.setRoot(PassageirosPage);
+            }),
+            err => {
+                console.log(err);
+                //** Adicionar tratamento de erro 
+            }
         })
-        this.navCtrl.setRoot(PassageirosPage);
     }
 }

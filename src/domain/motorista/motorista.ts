@@ -1,4 +1,3 @@
-import { PosicaoGlobal } from "../posicaoglobal/posicaoglobal";
 import { Usuario } from "../usuario/usuario";
 import { Filho } from "../filho/filho";
 import { Viagem } from "../viagem/viagem";

@@ -8,9 +8,19 @@ import { Usuario } from "../usuario/usuario";
 @Injectable()
 export class MotoristaService{
 
-    constructor(private _http: Http){}
+    private _motorista: Motorista;
 
-    getMotorista(idMotorista: number){
+    constructor(private _http: Http){    
+    }
+
+    get Motorista(){
+        if (this._motorista != null)
+            return this._motorista;
+        else
+            return
+    }
+
+    private _getMotorista(idMotorista: number){
 
         let api = Parametros.baseUri() + `api/motorista/${idMotorista}`;
         let headers = new Headers();
@@ -19,25 +29,19 @@ export class MotoristaService{
         return this._http
             .get(api, { headers: headers })
             .map(res => res.json())
-            .toPromise()
-            .then(dado => {
-                let motorista = new Motorista(
-                    new Usuario(
-                        dado.Usuario.idUsuario,
-                        dado.Usuario.telefone,
-                        dado.Usuario.nome,
-                        dado.Usuario.tipoUsuario,
-                        dado.Usuario.senha
-                    ),
-                    dado.idUsuario,
-                    dado.emViagem,
-                    dado.posicao_latitude,
-                    dado.posicao_longitude,
-                    dado.foto
-                )
-                return motorista;   
-            });
-            
+            .subscribe((data) => this._motorista = data)
+    }
+
+    atualizaPosicaoMotorista(latitude: number, longitude: number){
+        
+        if ( this._motorista != null
+            && (this._motorista.posicao_latitude != latitude
+            || this._motorista.posicao_longitude != longitude)){
+
+            this._motorista.posicao_latitude = latitude;
+            this._motorista.posicao_longitude = longitude;
+            this.atualizaMotorista(this._motorista);
+        }
     }
 
     atualizaMotorista(motorista: Motorista){
@@ -49,6 +53,6 @@ export class MotoristaService{
 
         return this._http
             .put(api, JSON.stringify(motorista), { headers: headers })
-            .map(res => res.json())
+            .toPromise();
     }
 }

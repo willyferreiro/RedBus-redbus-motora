@@ -16,8 +16,6 @@ export class FilhoService{
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
 
-        let passageiros: Filho[] = []; 
-
         return this._http
             .get(api, { headers: headers })
             .map(res => res.json())

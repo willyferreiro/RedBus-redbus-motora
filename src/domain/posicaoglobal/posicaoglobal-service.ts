@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation';
 import { PosicaoGlobal } from "./posicaoglobal";
+import { MotoristaService } from "../motorista/motorista-service";
 
 @Injectable()
 export class PosicaoGlobalService {
 
     private _posicaoGlobal: PosicaoGlobal;
 
-    constructor(private _geolocation: Geolocation) {
+    constructor(
+        private _geolocation: Geolocation,
+        private _motoristaService: MotoristaService) {
 
         this._posicaoGlobal = new PosicaoGlobal();
 
@@ -31,6 +34,12 @@ export class PosicaoGlobalService {
                         geolocation.coords.latitude,
                         geolocation.coords.longitude,
                         geolocation.timestamp)
+                    
+                    //Atualiza posição do motorista dinamicamente
+                    this._motoristaService.atualizaPosicaoMotorista(
+                        geolocation.coords.latitude,
+                        geolocation.coords.longitude
+                    )
                 }
             }
             ,((error) => {
