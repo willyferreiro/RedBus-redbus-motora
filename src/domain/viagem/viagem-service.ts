@@ -28,7 +28,7 @@ export class ViagemService{
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         
-        let api = Parametros.baseUri() + `api/viagemFilho/${idViagem}/${idFilho}`;
+        let api = Parametros.baseUri() + `api/passageiro/${idViagem}/${idFilho}`;
 
         return this._http
             .get(api, { headers: headers })

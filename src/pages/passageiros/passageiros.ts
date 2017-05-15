@@ -39,19 +39,23 @@ export class PassageirosPage implements OnInit {
 
         loader.present();
 
-        this._motorista = this._motoristaService.Motorista;
-        console.log(this._motorista);
-        
-        this._filhoservice.listaPassageiros()
-        .then((passageiros) => {
-            this._passageiro = passageiros;
-            this._passageiroOriginal = this._passageiro;
-            loader.dismiss();
-        }, err => { 
-            //*** COLOCAR PAGINA DE ERRO */
-            console.log(err);
-            loader.dismiss();
-        })
+        //** TEMPORARIO - motorista virá do login */
+        this._motoristaService.logaMotorista(1)
+            .then(() => {
+                
+                this._motorista = this._motoristaService.Motorista;
+ 
+                this._filhoservice.listaPassageiros()
+                .then((passageiros) => {
+                    this._passageiro = passageiros;
+                    this._passageiroOriginal = this._passageiro;
+                    loader.dismiss();
+                }, err => { 
+                    //*** COLOCAR PAGINA DE ERRO */
+                    console.log(err);
+                    loader.dismiss();
+                })
+            })
     }
 
     get passageiros() {

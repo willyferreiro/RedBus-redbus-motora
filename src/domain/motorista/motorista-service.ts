@@ -14,10 +14,16 @@ export class MotoristaService{
     }
 
     get Motorista(){
-        if (this._motorista != null)
-            return this._motorista;
-        else
-            return
+        return this._motorista;
+    }
+
+    //** TEMPORARIO - Ajustar método de login */
+    public logaMotorista(idMotorista: number){
+        return this._getMotorista(idMotorista)
+            .then((data) => {
+                this._motorista = data;
+                return this._motorista;
+            })
     }
 
     private _getMotorista(idMotorista: number){
@@ -29,7 +35,7 @@ export class MotoristaService{
         return this._http
             .get(api, { headers: headers })
             .map(res => res.json())
-            .subscribe((data) => this._motorista = data)
+            .toPromise()
     }
 
     atualizaPosicaoMotorista(latitude: number, longitude: number){

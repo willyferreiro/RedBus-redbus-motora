@@ -36,7 +36,7 @@ export class ViagemPage {
             this._viagemPassageiroDesembarcados.push(viagemfilho);
         });
         
-        this._motorista = navParams.get('motorista');
+        this._motorista = this._motoristaService.Motorista;
     }
 
     get viagemPassageirosDesembarcados(){
@@ -69,6 +69,7 @@ export class ViagemPage {
                 
                 this._viagemService.getViagemPassageiro(passageiro.idViagem, passageiro.idFilho)
                 .then((viagemPassageiroAtualizado) => {
+                    
                     viagemPassageiro = viagemPassageiroAtualizado;
                     this._viagemPassageiroEmbarcados.push(viagemPassageiro);
                 })
@@ -97,6 +98,7 @@ export class ViagemPage {
                 
                 this._viagemService.getViagemPassageiro(passageiro.idViagem, passageiro.idFilho)
                 .then((viagemPassageiroAtualizado) => {
+                    
                     viagemPassageiro = viagemPassageiroAtualizado;
                     this._viagemPassageiroEntregues.push(viagemPassageiro);
                 })
@@ -125,32 +127,16 @@ export class ViagemPage {
     private _confirmaFinalizacao(){
         
         //Atualiza a lista de filhos embarcados, considerando posição atual do motorista
-        this._viagemPassageiroEmbarcados.forEach(viagemPassageiro => {
+        if (this._viagemPassageiroEmbarcados.length > 0)
+        {
+            this._viagemPassageiroEmbarcados.forEach(viagemPassageiro => {
+                this.desembarca(viagemPassageiro);
+            })
+        }
 
-            let passageiro = new AtualizaPassageiroDTO(
-                viagemPassageiro.idViagem,
-                viagemPassageiro.idFilho,
-                this._posicaoGlobalService.posicaoGlobal.latitude,
-                this._posicaoGlobalService.posicaoGlobal.longitude,
-                viagemPassageiro.Filho.embarcado = false
-            )
-            this._viagemService.atualizaPassageiro(passageiro)
-            .then(() => {
-                 //** Emitir aviso mãe
-                 this._viagemPassageiroEmbarcados.splice(
-                    this._viagemPassageiroEmbarcados.indexOf(viagemPassageiro), 1
-                );
-                this._viagemPassageiroEntregues.push(viagemPassageiro);
+        this._motorista.emViagem = false;
+        this._motoristaService.atualizaMotorista(this._motorista);
 
-                this._motorista.emViagem = false;
-                this._motoristaService.atualizaMotorista(this._motorista);
-
-                this.navCtrl.setRoot(PassageirosPage);
-            }),
-            err => {
-                console.log(err);
-                //** Adicionar tratamento de erro 
-            }
-        })
+        this.navCtrl.setRoot(PassageirosPage);
     }
 }

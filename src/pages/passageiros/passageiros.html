@@ -12,10 +12,10 @@
         <ion-list>
             <ion-item  *ngFor="let passageiro of passageiros">
                 <ion-avatar item-left>
-                    <img src="{{passageiro.foto}}">
+                    <ion-img src="{{passageiro.foto}}" cache="true"></ion-img>
                 </ion-avatar>
                 <ion-label>{{passageiro.nome}}</ion-label>
-                <ion-toggle #toggle color="secondary" 
+                <ion-toggle #toggle color="secondary"
                     (ionChange)="selecionaPassageiros(toggle.checked, passageiro)"></ion-toggle>
             </ion-item>
         </ion-list>
