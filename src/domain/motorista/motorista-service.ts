@@ -3,7 +3,6 @@ import { Http, Headers } from "@angular/http";
 
 import { Parametros } from "../util/parametros";
 import { Motorista } from "./motorista";
-import { Usuario } from "../usuario/usuario";
 
 @Injectable()
 export class MotoristaService{

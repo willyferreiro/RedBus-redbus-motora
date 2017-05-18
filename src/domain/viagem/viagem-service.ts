@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from "@angular/http";
 import { Parametros } from "../util/parametros";
-import { ViagemFilho } from "./viagem-filho";
 import { AtualizaPassageiroDTO } from "./atualiza-passageiro-dto";
 import { InicioViagemDTO } from "./inicioviagemdto";
+import { Viagem } from "./viagem";
+import { FimViagemDTO } from "./fimviagemdto";
 
 @Injectable()
 export class ViagemService{
@@ -45,6 +46,19 @@ export class ViagemService{
 
         return this._http
             .put(api, JSON.stringify(passageiro), { headers: headers })
+            .map(res => res.json())
+            .toPromise();
+    }
+
+    finalizaViagem(fimViagem: FimViagemDTO){
+        
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        
+          let api = Parametros.baseUri() + `api/viagem/${fimViagem.idViagem}`;
+
+        return this._http
+            .put(api, JSON.stringify(fimViagem), { headers: headers })
             .map(res => res.json())
             .toPromise();
     }
