@@ -8,7 +8,7 @@ import { Viagem } from "../../domain/viagem/viagem";
 import { ViagemFilho } from "../../domain/viagem/viagem-filho";
 import { AtualizaPassageiroDTO } from "../../domain/viagem/atualiza-passageiro-dto";
 import { MotoristaService } from "../../domain/motorista/motorista-service";
-import { FimViagemDTO } from "../../domain/viagem/fimviagemdto";
+import { ViagemDTO } from "../../domain/viagem/viagemdto";
 
 //import { moment } from 'node_modules/moment-timezone';
 
@@ -64,14 +64,12 @@ export class ViagemPage {
         this._viagemService.atualizaPassageiro(passageiro)
             .then(() => {
                  //** Emitir aviso mãe
-                 console.log(viagemPassageiro);
                  this._viagemPassageiroDesembarcados.splice(
                     this._viagemPassageiroDesembarcados.indexOf(viagemPassageiro), 1
                 );
                 
                 this._viagemService.getViagemPassageiro(passageiro.idViagem, passageiro.idFilho)
                 .then((viagemPassageiroAtualizado) => {
-                    console.log(viagemPassageiroAtualizado);
                     this._viagemPassageiroEmbarcados.push(viagemPassageiroAtualizado);
                 })
             }),
@@ -125,23 +123,12 @@ export class ViagemPage {
 
     private _confirmaFinalizacao(){
         
-        // //Atualiza a lista de filhos embarcados, considerando posição atual do motorista
-        // if (this._viagemPassageiroEmbarcados.length > 0){
-
-        //     this._viagemPassageiroEmbarcados.forEach(viagemPassageiro => {
-        //         this.desembarca(viagemPassageiro);
-        //     })
-        // }
-
-        // this._motorista.emViagem = false;
-        // this._motoristaService.atualizaMotorista(this._motorista);
-
         let filhos: number[] = [];
         this._viagemPassageiroEmbarcados.forEach(viagemPassageiro => {
             filhos.push(viagemPassageiro.idFilho);
         })
 
-        let fimViagem = new FimViagemDTO(
+        let fimViagem = new ViagemDTO(
             this._viagem.idViagem,
             this._motorista.idUsuario,
             this._posicaoGlobalService.posicaoGlobal.latitude,

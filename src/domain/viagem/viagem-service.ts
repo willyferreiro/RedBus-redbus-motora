@@ -2,24 +2,35 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from "@angular/http";
 import { Parametros } from "../util/parametros";
 import { AtualizaPassageiroDTO } from "./atualiza-passageiro-dto";
-import { InicioViagemDTO } from "./inicioviagemdto";
-import { Viagem } from "./viagem";
-import { FimViagemDTO } from "./fimviagemdto";
+import { ViagemDTO } from "./viagemdto";
 
 @Injectable()
 export class ViagemService{
 
     constructor(private _http: Http){}
 
-    iniciaViagem(viagemDTO: InicioViagemDTO){
+    iniciaViagem(viagemDTO: ViagemDTO){
         
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         
-        let api = Parametros.baseUri() + "api/viagem";
+        let api = Parametros.baseUri() + "api/viagem/iniciaviagem";
         
         return this._http
             .post(api, JSON.stringify(viagemDTO), { headers: headers })
+            .map(res => res.json())
+            .toPromise();
+    }
+
+    finalizaViagem(fimViagem: ViagemDTO){
+        
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        
+          let api = Parametros.baseUri() + `api/viagem/finalizaviagem/${fimViagem.idViagem}`;
+
+        return this._http
+            .put(api, JSON.stringify(fimViagem), { headers: headers })
             .map(res => res.json())
             .toPromise();
     }
@@ -46,19 +57,6 @@ export class ViagemService{
 
         return this._http
             .put(api, JSON.stringify(passageiro), { headers: headers })
-            .map(res => res.json())
-            .toPromise();
-    }
-
-    finalizaViagem(fimViagem: FimViagemDTO){
-        
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        
-          let api = Parametros.baseUri() + `api/viagem/${fimViagem.idViagem}`;
-
-        return this._http
-            .put(api, JSON.stringify(fimViagem), { headers: headers })
             .map(res => res.json())
             .toPromise();
     }

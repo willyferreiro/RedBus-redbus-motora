@@ -8,7 +8,7 @@ import { MotoristaService } from "../../domain/motorista/motorista-service";
 import { Viagem } from "../../domain/viagem/viagem";
 import { ViagemService } from "../../domain/viagem/viagem-service";
 import { PosicaoGlobalService } from "../../domain/posicaoglobal/posicaoglobal-service";
-import { InicioViagemDTO } from "../../domain/viagem/inicioviagemdto";
+import { ViagemDTO } from "../../domain/viagem/viagemdto";
 
 @Component({
     selector: 'page-passageiros',
@@ -93,14 +93,15 @@ export class PassageirosPage implements OnInit {
             idFilhos.push(passageiro.idFilho);
         });
 
-        let inicioViagem = new InicioViagemDTO(
+        let viagemDTO = new ViagemDTO(
+            null,
             this._motorista.idUsuario,
             this._posicaoGlobalService.posicaoGlobal.latitude,
             this._posicaoGlobalService.posicaoGlobal.latitude,
             idFilhos
         );
    
-        this._viagemservice.iniciaViagem(inicioViagem)
+        this._viagemservice.iniciaViagem(viagemDTO)
         .then((viagem: Viagem) => {
             
             this.navCtrl.push(ViagemPage, {Viagem: viagem});
