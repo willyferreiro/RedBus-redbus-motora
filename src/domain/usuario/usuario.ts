@@ -9,9 +9,5 @@ export class Usuario{
         public nome: string,
         public tipoUsuario: string,
         public senha: string = ""
-        //public ICollection<Mensagem> MensagemDe
-        //public ICollection<Mensagem> MensagemPara
-        //public Motorista: Motorista,
-        //public Responsavel: Responsavel
     ){}
 }
