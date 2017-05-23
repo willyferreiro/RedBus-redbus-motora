@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, LoadingController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController } from 'ionic-angular';
 import { ViagemPage } from '../viagem/viagem';
 import { Filho } from "../../domain/filho/filho";
 import { FilhoService } from "../../domain/filho/filho-service";
@@ -26,6 +26,7 @@ export class PassageirosPage implements OnInit {
         public navCtrl: NavController,
         private _posicaoGlobalService: PosicaoGlobalService,
         private _loadingCtrl: LoadingController,
+        private _alertCtrl: AlertController,
         private _filhoservice: FilhoService,
         private _viagemservice: ViagemService,
         private _motoristaService: MotoristaService)
@@ -50,11 +51,17 @@ export class PassageirosPage implements OnInit {
                     this._passageiro = passageiros;
                     this._passageiroOriginal = this._passageiro;
                     loader.dismiss();
-                }, err => { 
-                    //*** COLOCAR PAGINA DE ERRO */
-                    console.log(err);
-                    loader.dismiss();
                 })
+            })
+            .catch(err => {
+                //*** COLOCAR PAGINA DE ERRO */
+                console.log(err);
+                loader.dismiss();
+                this._alertCtrl.create({
+                    title: 'Erro',
+                    subTitle: err,
+                    buttons: [{ text: 'Ok'}]
+                }).present()
             })
     }
 
@@ -88,6 +95,12 @@ export class PassageirosPage implements OnInit {
 
     iniciaViagem() {
 
+        let loader = this._loadingCtrl.create({
+            content: 'Inciando viagem...'
+        });
+
+        loader.present();
+
         let idFilhos: number[] = [];
         this._passageiroSelecionados.forEach(passageiro => {
             idFilhos.push(passageiro.idFilho);
@@ -104,14 +117,22 @@ export class PassageirosPage implements OnInit {
         this._viagemservice.iniciaViagem(viagemDTO)
         .then((viagem: Viagem) => {
             
+            loader.dismiss();
             this.navCtrl.push(ViagemPage, {Viagem: viagem});
 
-        }), err => { 
+        })
+        .catch(err => {
+            //*** COLOCAR PAGINA DE ERRO */
             console.log(err);
-            //** Adicionar tratamento de erro 
-        }
+            loader.dismiss();
+            this._alertCtrl.create({
+                title: 'Erro',
+                subTitle: err,
+                buttons: [{ text: 'Ok'}]
+            }).present()
+        })
         
-        //emitir alerta mae
+        //** emitir alerta mae
     }
 
 }

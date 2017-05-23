@@ -19,7 +19,7 @@ export class ViagemService{
         return this._http
             .post(api, JSON.stringify(viagemDTO), { headers: headers })
             .map(res => res.json())
-            .toPromise();
+            .toPromise()
     }
 
     finalizaViagem(fimViagem: ViagemDTO){

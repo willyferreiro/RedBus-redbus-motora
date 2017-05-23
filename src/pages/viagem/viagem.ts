@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController} from 'ionic-angular';
+import { NavController, NavParams, LoadingController, AlertController} from 'ionic-angular';
 import { PassageirosPage } from '../passageiros/passageiros';
 import { Motorista } from "../../domain/motorista/motorista";
 import { PosicaoGlobalService } from "../../domain/posicaoglobal/posicaoglobal-service";
@@ -27,6 +27,7 @@ export class ViagemPage {
     constructor(
         public navCtrl: NavController,
         public navParams: NavParams,
+        private _loadingCtrl: LoadingController,
         private _posicaoGlobalService: PosicaoGlobalService,
         private _motoristaService: MotoristaService,
         private _viagemService: ViagemService,
@@ -54,6 +55,12 @@ export class ViagemPage {
 
     embarca(viagemPassageiro: ViagemFilho){
      
+        let loader = this._loadingCtrl.create({
+            content: 'Atualizando passageiro...'
+        });
+
+        loader.present();
+
         let passageiro = new AtualizaPassageiroDTO(
             viagemPassageiro.idViagem,
             viagemPassageiro.idFilho,
@@ -69,17 +76,29 @@ export class ViagemPage {
                 );
                 
                 this._viagemService.getViagemPassageiro(passageiro.idViagem, passageiro.idFilho)
-                .then((viagemPassageiroAtualizado) => {
+                .then(viagemPassageiroAtualizado => {
                     this._viagemPassageiroEmbarcados.push(viagemPassageiroAtualizado);
+                    loader.dismiss();
                 })
-            }),
-            err => {
+            })
+            .catch (err => {
                 console.log(err);
-                //** Adicionar tratamento de erro 
-            }
+                loader.dismiss();
+                this._alertCtrl.create({
+                    title: 'Erro',
+                    subTitle: err,
+                    buttons: [{ text: 'Ok'}]
+                }).present()
+            })
     }
     
     desembarca(viagemPassageiro: ViagemFilho){
+
+        let loader = this._loadingCtrl.create({
+            content: 'Atualizando passageiro...'
+        });
+
+        loader.present();
 
         let passageiro = new AtualizaPassageiroDTO(
             viagemPassageiro.idViagem,
@@ -98,12 +117,17 @@ export class ViagemPage {
                 this._viagemService.getViagemPassageiro(passageiro.idViagem, passageiro.idFilho)
                 .then((viagemPassageiroAtualizado) => {
                     this._viagemPassageiroEntregues.push(viagemPassageiroAtualizado);
+                    loader.dismiss();
                 })
-            }),
-            err => {
+            }).catch (err => {
                 console.log(err);
-                //** Adicionar tratamento de erro 
-            }
+                loader.dismiss();
+                this._alertCtrl.create({
+                    title: 'Erro',
+                    subTitle: err,
+                    buttons: [{ text: 'Ok'}]
+                }).present()
+            })
     }
 
     finaliza(){
@@ -123,6 +147,12 @@ export class ViagemPage {
 
     private _confirmaFinalizacao(){
         
+        let loader = this._loadingCtrl.create({
+            content: 'Finalizando...'
+        });
+
+        loader.present();
+        
         let filhos: number[] = [];
         this._viagemPassageiroEmbarcados.forEach(viagemPassageiro => {
             filhos.push(viagemPassageiro.idFilho);
@@ -138,7 +168,17 @@ export class ViagemPage {
         
         this._viagemService.finalizaViagem(fimViagem)
         .then(() => {
+            loader.dismiss();
             this.navCtrl.setRoot(PassageirosPage);
         })
+        .catch (err => {
+                console.log(err);
+                loader.dismiss();
+                this._alertCtrl.create({
+                    title: 'Erro',
+                    subTitle: err,
+                    buttons: [{ text: 'Ok'}]
+                }).present()
+            })
     }
 }
