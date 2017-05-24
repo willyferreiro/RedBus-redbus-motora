@@ -25,12 +25,7 @@ export class PosicaoGlobalService {
                 
                 if (geolocation.coords) {
 
-                    console.log("GPS Update: " +
-                        "latitude: " + geolocation.coords.latitude +
-                        "longitude: " + geolocation.coords.longitude +
-                        "timestamp: " + geolocation.timestamp);
-
-                    this._posicaoGlobal = new PosicaoGlobal(
+                  this._posicaoGlobal = new PosicaoGlobal(
                         geolocation.coords.latitude,
                         geolocation.coords.longitude,
                         geolocation.timestamp)
@@ -42,7 +37,7 @@ export class PosicaoGlobalService {
                     )
                 }
             }
-            ,((error) => {
+            ,(error => {
                 console.log(error);
             }));
     }

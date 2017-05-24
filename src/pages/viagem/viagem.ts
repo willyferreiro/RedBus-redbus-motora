@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController} from 'ionic-angular';
 import { PassageirosPage } from '../passageiros/passageiros';
 import { Motorista } from "../../domain/motorista/motorista";
@@ -32,8 +32,11 @@ export class ViagemPage {
         private _motoristaService: MotoristaService,
         private _viagemService: ViagemService,
         private _alertCtrl: AlertController){
+    }
 
-        this._viagem = navParams.get('Viagem');
+    ngOnInit() {
+
+        this._viagem = this.navParams.get('Viagem');
         this._viagem.ViagemFilho.forEach((viagemfilho) => {
             this._viagemPassageiroDesembarcados.push(viagemfilho);
         });
@@ -76,19 +79,16 @@ export class ViagemPage {
                 );
                 
                 this._viagemService.getViagemPassageiro(passageiro.idViagem, passageiro.idFilho)
-                .then(viagemPassageiroAtualizado => {
-                    this._viagemPassageiroEmbarcados.push(viagemPassageiroAtualizado);
-                    loader.dismiss();
+                .subscribe(
+                    viagemPassageiroAtualizado => {
+                        this._viagemPassageiroEmbarcados.push(viagemPassageiroAtualizado);
+                    loader.dismiss(),
+                    err => this.mostraMsgErro(err);
                 })
             })
             .catch (err => {
                 console.log(err);
                 loader.dismiss();
-                this._alertCtrl.create({
-                    title: 'Erro',
-                    subTitle: err,
-                    buttons: [{ text: 'Ok'}]
-                }).present()
             })
     }
     
@@ -115,18 +115,16 @@ export class ViagemPage {
                 );
                 
                 this._viagemService.getViagemPassageiro(passageiro.idViagem, passageiro.idFilho)
-                .then((viagemPassageiroAtualizado) => {
-                    this._viagemPassageiroEntregues.push(viagemPassageiroAtualizado);
-                    loader.dismiss();
-                })
+                .subscribe(
+                    viagemPassageiroAtualizado => {
+                        this._viagemPassageiroEntregues.push(viagemPassageiroAtualizado);
+                        loader.dismiss();
+                    }),
+                    err => this.mostraMsgErro(err);
             }).catch (err => {
                 console.log(err);
                 loader.dismiss();
-                this._alertCtrl.create({
-                    title: 'Erro',
-                    subTitle: err,
-                    buttons: [{ text: 'Ok'}]
-                }).present()
+                this.mostraMsgErro(err);
             })
     }
 
@@ -172,13 +170,16 @@ export class ViagemPage {
             this.navCtrl.setRoot(PassageirosPage);
         })
         .catch (err => {
-                console.log(err);
                 loader.dismiss();
-                this._alertCtrl.create({
-                    title: 'Erro',
-                    subTitle: err,
-                    buttons: [{ text: 'Ok'}]
-                }).present()
+                this.mostraMsgErro(err);
             })
+    }
+
+    private mostraMsgErro(erro){
+        this._alertCtrl.create({
+            title: 'Erro',
+            subTitle: erro,
+            buttons: [{ text: 'Ok'}]
+        }).present()
     }
 }

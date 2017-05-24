@@ -5,7 +5,6 @@ import { Filho } from "../../domain/filho/filho";
 import { FilhoService } from "../../domain/filho/filho-service";
 import { Motorista } from "../../domain/motorista/motorista";
 import { MotoristaService } from "../../domain/motorista/motorista-service";
-import { Viagem } from "../../domain/viagem/viagem";
 import { ViagemService } from "../../domain/viagem/viagem-service";
 import { PosicaoGlobalService } from "../../domain/posicaoglobal/posicaoglobal-service";
 import { ViagemDTO } from "../../domain/viagem/viagemdto";
@@ -45,23 +44,20 @@ export class PassageirosPage implements OnInit {
             .then(() => {
                 
                 this._motorista = this._motoristaService.Motorista;
- 
-                this._filhoservice.listaPassageiros()
-                .then((passageiros) => {
-                    this._passageiro = passageiros;
-                    this._passageiroOriginal = this._passageiro;
-                    loader.dismiss();
-                })
+                
+                this._filhoservice.listaPassageiros(this._motorista.idUsuario)
+                    .subscribe(passageiros => {
+                        this._passageiro = passageiros;
+                        this._passageiroOriginal = this._passageiro;
+                        loader.dismiss();
+                    }),
+                    err => this.mostraMsgErro(err);
             })
             .catch(err => {
                 //*** COLOCAR PAGINA DE ERRO */
                 console.log(err);
                 loader.dismiss();
-                this._alertCtrl.create({
-                    title: 'Erro',
-                    subTitle: err,
-                    buttons: [{ text: 'Ok'}]
-                }).present()
+                err => this.mostraMsgErro(err);
             })
     }
 
@@ -115,24 +111,20 @@ export class PassageirosPage implements OnInit {
         );
    
         this._viagemservice.iniciaViagem(viagemDTO)
-        .then((viagem: Viagem) => {
-            
-            loader.dismiss();
-            this.navCtrl.push(ViagemPage, {Viagem: viagem});
-
-        })
-        .catch(err => {
-            //*** COLOCAR PAGINA DE ERRO */
-            console.log(err);
-            loader.dismiss();
-            this._alertCtrl.create({
-                title: 'Erro',
-                subTitle: err,
-                buttons: [{ text: 'Ok'}]
-            }).present()
-        })
-        
-        //** emitir alerta mae
+            .subscribe(
+                viagem => {
+                    loader.dismiss();
+                    //** emitir alerta mae
+                    this.navCtrl.push(ViagemPage, {Viagem: viagem});
+                }),
+                err => this.mostraMsgErro(err);
     }
 
+    private mostraMsgErro(erro){
+        this._alertCtrl.create({
+            title: 'Erro',
+            subTitle: erro,
+            buttons: [{ text: 'Ok'}]
+        }).present()
+    }
 }

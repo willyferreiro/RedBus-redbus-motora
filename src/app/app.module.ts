@@ -6,6 +6,7 @@ import { MyApp } from './app.component';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/catch';
 
 import { Geolocation } from '@ionic-native/geolocation';
 import { PosicaoGlobalService } from "../domain/posicaoglobal/posicaoglobal-service";
