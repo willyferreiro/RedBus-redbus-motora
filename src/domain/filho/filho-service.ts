@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from "@angular/http";
 
 import { Filho } from "./filho";
+import { FilhoDTO } from "./filho-dto";
 import { Parametros } from "../util/parametros";
 import { Observable } from "rxjs/Observable";
 
@@ -30,5 +31,16 @@ export class FilhoService{
         return this._http
             .put(api, JSON.stringify(filho), { headers: headers })
             .map(res => res.json())
+    }
+
+    salvaPassageiro(filho: FilhoDTO){
+
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let api = Parametros.baseUri() + "api/passageiro";
+
+        return this._http
+            .post(api, filho, { headers: headers })
+            .map(res => res.json())
+            .catch(err => err)
     }
 }

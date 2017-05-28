@@ -1,14 +1,93 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component, OnInit } from '@angular/core';
+import { NavController, AlertController } from 'ionic-angular';
+import { Camera, CameraOptions } from "@ionic-native/camera";
+import { MotoristaService } from "../../domain/motorista/motorista-service";
+import { Motorista } from "../../domain/motorista/motorista";
+import { FilhoDTO } from "../../domain/filho/filho-dto";
+import { FilhoService } from "../../domain/filho/filho-service";
+import { Filho } from "../../domain/filho/filho";
 
 @Component({
-  selector: 'page-passageiro',
-  templateUrl: 'passageiro.html'
+    selector: 'page-passageiro',
+    templateUrl: 'passageiro.html'
 })
-export class PassageiroPage {
+export class PassageiroPage implements OnInit {
 
-  constructor(public navCtrl: NavController) {
+    public passageiro: FilhoDTO;
+    private _motorista: Motorista;
 
-  }
+    constructor(
+        public navCtrl: NavController,
+        private _alertCtrl: AlertController,
+        private _camera: Camera,
+        private _motoristaService: MotoristaService,
+        private _filhoService: FilhoService) {
 
+        this.passageiro = new FilhoDTO();
+    }
+
+    ngOnInit() {
+         //** TEMPORARIO - motorista virá do login */
+        this._motoristaService.logaMotorista(1)
+            .then(() => {
+                
+                this._motorista = this._motoristaService.Motorista;
+            },
+            err => this.mostraMsgErro(err)
+            ); 
+    }
+
+    public tiraFoto(codimg: number){
+
+       const options: CameraOptions = {
+            quality: 100,
+            destinationType: this._camera.DestinationType.DATA_URL,
+            encodingType: this._camera.EncodingType.JPEG,
+            mediaType: this._camera.MediaType.PICTURE,
+            targetHeight: 100,
+            targetWidth: 100
+        }
+
+        this._camera.getPicture(options)
+            .then(imageData => {
+                let base64Image = 'data:image/jpeg;base64,' + imageData;
+                if (codimg == 1)
+                    this.passageiro.foto = base64Image;
+                else
+                    this.passageiro.fotoCompleta = base64Image;
+                }
+                , err => this.mostraMsgErro(err)
+            );
+    }
+
+    salvaPassageiro() {
+        
+        this.passageiro.idMotorista = this._motorista.idUsuario;
+
+        this._filhoService.salvaPassageiro(this.passageiro)
+        .subscribe(
+            data => {
+                this.passageiro = data;
+                this._alertCtrl.create({
+                    title: 'Sucesso',
+                    subTitle: `Passageiro ${this.passageiro.nome} cadastrado`,
+                    buttons: [{ text: 'Ok', handler: () => this.limpaTela() }]
+                }).present()
+            },
+            err => this.mostraMsgErro(err)
+        )
+    }
+
+    private limpaTela() {
+        this.passageiro = new FilhoDTO();
+    }
+
+    private mostraMsgErro(erro){
+
+        this._alertCtrl.create({
+            title: 'Erro',
+            subTitle: erro,
+            buttons: [{ text: 'Ok'}]
+        }).present()
+    }
 }

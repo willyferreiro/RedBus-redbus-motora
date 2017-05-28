@@ -19,7 +19,7 @@ export class PassageirosPage implements OnInit {
     private _passageiro: Filho[] = [];
     private _passageiroOriginal: Filho[] = []; //guarda lista original para o filtro
     private _passageiroSelecionados: Filho[] = [];
-
+    public desabilitaInicia: Boolean = true;
 
     constructor(
         public navCtrl: NavController,
@@ -50,8 +50,9 @@ export class PassageirosPage implements OnInit {
                         this._passageiro = passageiros;
                         this._passageiroOriginal = this._passageiro;
                         loader.dismiss();
-                    }),
-                    err => this.mostraMsgErro(err);
+                    },
+                    err => this.mostraMsgErro(err)
+                    );
             })
             .catch(err => {
                 //*** COLOCAR PAGINA DE ERRO */
@@ -69,10 +70,13 @@ export class PassageirosPage implements OnInit {
 
         if (ligado) {
             this._passageiroSelecionados.push(passageiro);
+            this.desabilitaInicia = null;
         } else {
             let index = this._passageiroSelecionados.indexOf(passageiro);
             if (index>=0)
                 this._passageiroSelecionados.splice(index, 1);
+            if(this._passageiroSelecionados.length == 0)
+                this.desabilitaInicia = true;
         }
     }
 
@@ -116,8 +120,11 @@ export class PassageirosPage implements OnInit {
                     loader.dismiss();
                     //** emitir alerta mae
                     this.navCtrl.push(ViagemPage, {Viagem: viagem});
-                }),
-                err => this.mostraMsgErro(err);
+                },
+                err => {
+                    loader.dismiss();
+                    this.mostraMsgErro(err);
+                });
     }
 
     private mostraMsgErro(erro){

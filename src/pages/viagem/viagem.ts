@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController} from 'ionic-angular';
 import { PassageirosPage } from '../passageiros/passageiros';
 import { Motorista } from "../../domain/motorista/motorista";
@@ -82,14 +82,14 @@ export class ViagemPage {
                 .subscribe(
                     viagemPassageiroAtualizado => {
                         this._viagemPassageiroEmbarcados.push(viagemPassageiroAtualizado);
-                    loader.dismiss(),
-                    err => this.mostraMsgErro(err);
-                })
-            })
-            .catch (err => {
+                        loader.dismiss()
+                    }
+                    , err => this.mostraMsgErro(err)
+                );
+            }, err => {
                 console.log(err);
                 loader.dismiss();
-            })
+            });
     }
     
     desembarca(viagemPassageiro: ViagemFilho){
@@ -119,13 +119,13 @@ export class ViagemPage {
                     viagemPassageiroAtualizado => {
                         this._viagemPassageiroEntregues.push(viagemPassageiroAtualizado);
                         loader.dismiss();
-                    }),
-                    err => this.mostraMsgErro(err);
-            }).catch (err => {
-                console.log(err);
+                    },
+                    err => this.mostraMsgErro(err)
+                );
+            }, err => {
                 loader.dismiss();
                 this.mostraMsgErro(err);
-            })
+            });
     }
 
     finaliza(){
@@ -136,14 +136,14 @@ export class ViagemPage {
                 subTitle: "Ainda existem viagemPassageiros embarcados. Deseja encerrar mesmo assim?",
                 buttons:[
                     { text: 'Cancelar'},
-                    { text: 'Confirmar', handler: () => this._confirmaFinalizacao() }]
+                    { text: 'Confirmar', handler: () => this.confirmaFinalizacao() }]
             }).present();
         }
         else
-            this._confirmaFinalizacao();
+            this.confirmaFinalizacao();
     }
 
-    private _confirmaFinalizacao(){
+    private confirmaFinalizacao(){
         
         let loader = this._loadingCtrl.create({
             content: 'Finalizando...'
@@ -168,11 +168,11 @@ export class ViagemPage {
         .then(() => {
             loader.dismiss();
             this.navCtrl.setRoot(PassageirosPage);
+        }
+        , err => {
+            loader.dismiss();
+            this.mostraMsgErro(err);
         })
-        .catch (err => {
-                loader.dismiss();
-                this.mostraMsgErro(err);
-            })
     }
 
     private mostraMsgErro(erro){

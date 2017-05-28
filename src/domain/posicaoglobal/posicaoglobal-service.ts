@@ -15,7 +15,7 @@ export class PosicaoGlobalService {
         this._posicaoGlobal = new PosicaoGlobal();
 
         var watchOptions = {
-            frequency: 5000,
+            frequency: 15000,
             timeout: 3000,
             enableHighAccuracy: true
         };
@@ -37,9 +37,9 @@ export class PosicaoGlobalService {
                     )
                 }
             }
-            ,(error => {
+            , error => {
                 console.log(error);
-            }));
+            });
     }
 
     get posicaoGlobal(): PosicaoGlobal {

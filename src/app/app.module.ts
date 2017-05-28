@@ -9,6 +9,8 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
 
 import { Geolocation } from '@ionic-native/geolocation';
+import { Camera } from '@ionic-native/camera';
+
 import { PosicaoGlobalService } from "../domain/posicaoglobal/posicaoglobal-service";
 import { FilhoService } from "../domain/filho/filho-service";
 import { MotoristaService } from "../domain/motorista/motorista-service";
@@ -51,6 +53,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     SplashScreen,
     HttpModule,
     Geolocation,
+    Camera,
     PosicaoGlobalService,
     FilhoService,
     ViagemService,

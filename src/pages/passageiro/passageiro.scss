@@ -2,20 +2,32 @@ page-passageiro {
     
     .card-center {
         text-align: center;
+        align-content: center;
+        text-align: center;
     }
 
-    .card-img-left {
+    .card-div-right{
         position: relative;
+        float: right;
+        align-content: center;
+        text-align: center;
+    }
+
+    .card-div-left{
+        position: relative;
+        float: left;
+        align-content: center;
+        text-align: center;
+    }
+    
+    .card-img-left {
         width: 10rem;
         height: 10rem;
-        padding: 15px;
     }
 
     .card-img-right {
-        position: relative;
         width: 10rem;
         height: 10rem;
-        padding: 15px;
     }
 
 }
