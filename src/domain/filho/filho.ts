@@ -11,8 +11,8 @@ export class Filho{
         posicao_longitutdeCasa: number = 0,
         posicao_latitudeEscola: number = 0,
         posicao_longitutdeEscola: number = 0,
-        public foto: ByteString = '',
-        public fotoCompleta: ByteString = '')
+        public foto: string = '',
+        public fotoCompleta: string = '')
     {}
 
 }

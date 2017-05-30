@@ -7,16 +7,16 @@
 </ion-header>
 
 <ion-content>
-    <form (ngSubmit)="salvaPassageiro()" name="formPassageiro">
+    <form name="formPassageiro">
 
         <ion-item class="card-center">
             <div class="card-div-left">
-                <img [src]="passageiro.foto" name="foto"
+                <img [src]="fotoTela" name="foto"
                     class="card-img-left" /> <!-- *ngIf="passageiro.foto" /> -->
                 <p><button ion-button clear (click)="tiraFoto(1)">Foto Rosto</button></p>
             </div>
             <div class="card-div-right">
-                <img [src]="passageiro.fotoCompleta" name="fotoCompleta" 
+                <img [src]="fotoCompletaTela" name="fotoCompleta" 
                     class="card-img-right" /> <!-- *ngIf="passageiro.fotoCompleta" /> -->
                 <p><button ion-button clear (click)="tiraFoto(2)">Foto Completa</button></p>
             </div>
@@ -47,6 +47,6 @@
                 name="enderecoEscola"></ion-input>
         </ion-item>
         <br><br>
-        <button ion-button block color="secondary" type="submit">Salvar Passageiro</button>
+        <button ion-button block color="secondary" (click)="salvaPassageiro()">Salvar Passageiro</button>
     </form>
 </ion-content>

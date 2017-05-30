@@ -17,9 +17,8 @@ export class ViagemService {
         let api = Parametros.baseUri() + "api/viagem/iniciaviagem";
 
         return this._http
-            .post(api, viagemDTO, { headers: headers })
+            .post(api, JSON.stringify(viagemDTO), { headers: headers })
             .map(res => res.json())
-            .catch(err => err)
     }
 
     finalizaViagem(fimViagem: ViagemDTO) {
@@ -41,7 +40,6 @@ export class ViagemService {
         return this._http
             .get(api, { headers: headers })
             .map(res => res.json())
-            .catch(err => err)
     }
 
     atualizaPassageiro(passageiro: AtualizaPassageiroDTO) {

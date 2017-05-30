@@ -48,6 +48,7 @@ export class PassageirosPage implements OnInit {
                 this._filhoservice.listaPassageiros(this._motorista.idUsuario)
                     .subscribe(passageiros => {
                         this._passageiro = passageiros;
+                        console.log(passageiros);
                         this._passageiroOriginal = this._passageiro;
                         loader.dismiss();
                     },

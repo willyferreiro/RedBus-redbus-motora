@@ -5,7 +5,6 @@ import { MotoristaService } from "../../domain/motorista/motorista-service";
 import { Motorista } from "../../domain/motorista/motorista";
 import { FilhoDTO } from "../../domain/filho/filho-dto";
 import { FilhoService } from "../../domain/filho/filho-service";
-import { Filho } from "../../domain/filho/filho";
 
 @Component({
     selector: 'page-passageiro',
@@ -15,6 +14,8 @@ export class PassageiroPage implements OnInit {
 
     public passageiro: FilhoDTO;
     private _motorista: Motorista;
+    public fotoTela = null;
+    public fotoCompletaTela = null;
 
     constructor(
         public navCtrl: NavController,
@@ -40,7 +41,7 @@ export class PassageiroPage implements OnInit {
     public tiraFoto(codimg: number){
 
        const options: CameraOptions = {
-            quality: 100,
+            quality: 75,
             destinationType: this._camera.DestinationType.DATA_URL,
             encodingType: this._camera.EncodingType.JPEG,
             mediaType: this._camera.MediaType.PICTURE,
@@ -50,13 +51,18 @@ export class PassageiroPage implements OnInit {
 
         this._camera.getPicture(options)
             .then(imageData => {
-                let base64Image = 'data:image/jpeg;base64,' + imageData;
-                if (codimg == 1)
-                    this.passageiro.foto = base64Image;
-                else
-                    this.passageiro.fotoCompleta = base64Image;
+                
+                let base64Image = "data:image/jpeg;base64," + imageData;
+                if (codimg == 1){
+                    this.passageiro.foto = imageData;
+                    this.fotoTela = base64Image;
+                }   
+                else{
+                    this.passageiro.fotoCompleta = imageData;
+                    this.fotoCompletaTela =  base64Image;
                 }
-                , err => this.mostraMsgErro(err)
+            }
+            , err => this.mostraMsgErro(err)
             );
     }
 
@@ -67,7 +73,9 @@ export class PassageiroPage implements OnInit {
         this._filhoService.salvaPassageiro(this.passageiro)
         .subscribe(
             data => {
+                console.log(data);
                 this.passageiro = data;
+                
                 this._alertCtrl.create({
                     title: 'Sucesso',
                     subTitle: `Passageiro ${this.passageiro.nome} cadastrado`,

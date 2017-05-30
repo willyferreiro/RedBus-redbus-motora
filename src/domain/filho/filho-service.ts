@@ -20,7 +20,6 @@ export class FilhoService{
         return this._http
             .get(api, { headers: headers })
             .map(res => res.json())
-            .catch(err => err)
     }
 
     atualizaPassageiros(filho: Filho){
@@ -41,6 +40,5 @@ export class FilhoService{
         return this._http
             .post(api, filho, { headers: headers })
             .map(res => res.json())
-            .catch(err => err)
     }
 }
